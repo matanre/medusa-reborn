@@ -15,9 +15,11 @@ public class GorgonController : MonoBehaviour
     [SerializeField] private float rotationSpeed = 15.0f; // Speed at which player smoothly rotates to face movement direction
 
     [Header("Ground Check Settings")]
+    public bool isGrounded = false;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.25f;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Vector3 groundCheckOffset = new Vector3(0f, -0.05f, 0f);
 
     [Header("Crouch Settings")]
     [SerializeField] private float normalHeight = 2.0f;
@@ -46,6 +48,7 @@ public class GorgonController : MonoBehaviour
     private void FixedUpdate()
     {
         CheckGroundStatus();
+        isGrounded = IsGrounded; // debug check
         ApplyMovement();
         ApplyCustomGravity();
 
@@ -89,15 +92,26 @@ public class GorgonController : MonoBehaviour
     {
         if (groundCheck != null)
         {
-            IsGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
+            // CheckSphere returns true if any collider on groundLayer intersects the sphere
+            IsGrounded = Physics.CheckSphere(groundCheck.position + groundCheckOffset, groundCheckRadius, groundLayer);
         }
         else
         {
-            IsGrounded = Physics.Raycast(transform.position, Vector3.down, normalHeight * 0.5f + 0.1f, groundLayer);
+            // Fallback Raycast using Capsule Collider bottom
+            float rayLength = (capsuleCollider.height * 0.5f) + 0.15f;
+            IsGrounded = Physics.Raycast(transform.position, Vector3.down, rayLength, groundLayer);
         }
     }
 
-    
+    private void OnDrawGizmosSelected()
+    {
+        // Renders ground check sphere in Scene view: GREEN when grounded, RED when airborne
+        Vector3 checkPos = groundCheck != null ? groundCheck.position + groundCheckOffset : transform.position;
+        Gizmos.color = IsGrounded ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(checkPos, groundCheckRadius);
+    }
+
+
     private void ApplyMovement()
     {
         float currentSpeed = moveSpeed * ExternalSpeedMultiplier;
@@ -112,47 +126,76 @@ public class GorgonController : MonoBehaviour
 
     private void HandleFacingDirection()
     {
-        // Create a 3D movement direction vector on the X-Z plane
-        Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
+        // 1. Guard Clause: Stop immediately if there is no significant input (deadzone threshold)
+        if (moveInput.sqrMagnitude < 0.01f)
+            return;
 
-        // Only rotate if there is actual input to prevent snapping back to 0 when stopping
-        if (moveDirection.sqrMagnitude > 0.01f)
+        Vector3 targetDirection = Vector3.zero;
+
+        // 2. Determine cardinal direction based on the stronger axis input
+        if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
         {
-            // Calculate target rotation towards the movement direction
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+            // Primary horizontal movement (A / D)
+            if (moveInput.x > 0.1f)
+                targetDirection = Vector3.right;    // Face Right (+X)
+            else if (moveInput.x < -0.1f)
+                targetDirection = Vector3.left;     // Face Left (-X)
+        }
+        else
+        {
+            // Primary depth movement (W / S)
+            if (moveInput.y > 0.1f)
+                targetDirection = Vector3.forward;  // Face Away / Deep (+Z)
+            else if (moveInput.y < -0.1f)
+                targetDirection = Vector3.back;     // Face Camera / Down (-Z)
+        }
 
-            // Smoothly interpolate (Slerp) rotation on the Y-axis
+        // 3. Smoothly rotate towards target direction
+        if (targetDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-            // Keep FacingRight updated if needed for other logic
-            FacingRight = moveInput.x >= 0f;
         }
     }
 
-    //private void ApplyMovement()
-    //{
-    //    float currentSpeed = moveSpeed * ExternalSpeedMultiplier;
-    //    if (IsCrouching) currentSpeed *= crouchSpeedMultiplier;
-
-    //    rb.linearVelocity = new Vector3(moveInput.x * currentSpeed, rb.linearVelocity.y, 0f);
-    //}
-
     //private void HandleFacingDirection()
     //{
-    //    if (moveInput.x > 0.1f && !FacingRight)
+    //    Vector3 targetDirection = Vector3.zero;
+
+    //    // Prioritize or snap to primary cardinal directions
+    //    if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
     //    {
-    //        FacingRight = true;
-    //        transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+    //        // Primary horizontal movement (A / D)
+    //        if (moveInput.x > 0.1f)
+    //            targetDirection = Vector3.right;    // Face Right (+X)
+    //        else if (moveInput.x < -0.1f)
+    //            targetDirection = Vector3.left;     // Face Left (-X)
     //    }
-    //    else if (moveInput.x < -0.1f && FacingRight)
+    //    else
     //    {
-    //        FacingRight = false;
-    //        transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+    //        // Primary depth movement (W / S)
+    //        if (moveInput.y > 0.1f)
+    //            targetDirection = Vector3.forward;  // Face Away / Deep (+Z)
+    //        else if (moveInput.y < -0.1f)
+    //            targetDirection = Vector3.back;     // Face Camera / Down (-Z)
+    //    }
+
+    //    // Only apply rotation if we have a clear target direction
+    //    if (targetDirection != Vector3.zero)
+    //    {
+    //        Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+    //        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     //    }
     //}
 
     private void ExecuteJump()
     {
+        if (!IsGrounded)
+        {
+            Debug.Log($"{name}: Cannot jump whilst not grounded.");
+            return;
+        }
+
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, 0f);
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
