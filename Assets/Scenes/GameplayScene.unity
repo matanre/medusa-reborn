@@ -583,13 +583,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 197025716}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.26506314, y: -0.2699219, z: 0.07756332, w: 0.9224249}
-  m_LocalPosition: {x: 12.001013, y: 11.997484, z: -15.000601}
+  m_LocalRotation: {x: 0.26527688, y: -0.21575269, z: 0.06103427, w: 0.9377387}
+  m_LocalPosition: {x: 10.989594, y: 11.97999, z: -15.004774}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 107610588}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 28.055, y: -0.914, z: 16.202}
 --- !u!114 &197025718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,16 +603,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineRotationComposer
   Composition:
-    ScreenPosition: {x: 0, y: 0}
+    ScreenPosition: {x: 0.05, y: 0}
     DeadZone:
       Enabled: 1
-      Size: {x: 0.1, y: 0.1}
+      Size: {x: 0.15, y: 0.15}
     HardLimits:
       Enabled: 0
       Size: {x: 0.8, y: 0.8}
-      Offset: {x: 0, y: 0}
+      Offset: {x: 0.18, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 2.5, y: 1.5, z: 0}
+  TargetOffset: {x: 2.5, y: 2.5, z: 2}
   Damping: {x: 0.5, y: 0.5}
   Lookahead:
     Enabled: 1
@@ -633,10 +633,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineSplineDolly
   m_SplineSettings:
     Spline: {fileID: 1111306166}
-    Position: 0
+    Position: 0.32490215
     Units: 1
-  SplineOffset: {x: 5, y: 2, z: 2}
-  CameraRotation: 0
+  SplineOffset: {x: 5, y: 2, z: 3}
+  CameraRotation: 3
   Damping:
     Enabled: 1
     Position: {x: 2.5, y: 2.5, z: 2.5}
@@ -654,7 +654,7 @@ MonoBehaviour:
     - rid: 8181265277720199426
       type: {class: SplineAutoDolly/NearestPointToTarget, ns: Unity.Cinemachine, asm: Unity.Cinemachine}
       data:
-        PositionOffset: 0
+        PositionOffset: 0.1
         SearchResolution: 4
         SearchIteration: 2
 --- !u!114 &197025720
@@ -933,8 +933,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.26506317, y: -0.26992193, z: 0.077563345, w: 0.92242485}
-  m_LocalPosition: {x: 12.001013, y: 11.997484, z: -15.000601}
+  m_LocalRotation: {x: 0.26527688, y: -0.21575269, z: 0.06103427, w: 0.9377387}
+  m_LocalPosition: {x: 10.989594, y: 11.97999, z: -15.004774}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1710,7 +1710,7 @@ Transform:
   m_GameObject: {fileID: 1111306164}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 10, z: -10}
+  m_LocalPosition: {x: -4.93, y: 10, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2612,7 +2612,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1942569237}
   m_Layer: 6
-  m_Name: Player_Root
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
