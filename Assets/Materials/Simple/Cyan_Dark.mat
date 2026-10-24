@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cyan
+  m_Name: Cyan_Dark
   m_Shader: {fileID: -6465566751694194690, guid: e532154f519c55646b666da4bd5ee923, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -40,9 +40,9 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Roughness: 0.08
+    - _Roughness: 0.2
     m_Colors:
-    - _BaseColor: {r: 0.504717, g: 1, b: 0.97705925, a: 1}
+    - _BaseColor: {r: 0.022027414, g: 0.21226415, b: 0.20320524, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &8014650870658089843
