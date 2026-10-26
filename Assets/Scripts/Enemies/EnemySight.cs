@@ -1,13 +1,9 @@
-using System.ComponentModel;
-using NUnit.Framework;
+using System.Linq;
 using UnityEngine;
 
 public class EnemySight : MonoBehaviour
 {
-    [Header("Field of View")]
-    [SerializeField] private float viewDistance = 8.0f;
-    [SerializeField] private float viewAngle = 60.0f; // Total arc angle
-    [SerializeField] private Transform eyesTransform;
+    [SerializeField] private FieldOfView fov;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private LayerMask obstacleLayer;
 
@@ -22,42 +18,61 @@ public class EnemySight : MonoBehaviour
     {
         playerTransform = null;
 
+        Transform enemyViewTransform;
+        Vector3 enemyViewPosition;
+        float viewDistance, viewAngle;
+        TryGetFovParams(out enemyViewTransform, out enemyViewPosition, out viewDistance, out viewAngle);
+
         // 1. Distance check
-        Collider[] targetsInRadius = Physics.OverlapSphere(eyesTransform.position, viewDistance, playerLayer);
+        Collider[] targetsInRadius = Physics.OverlapSphere(enemyViewPosition, viewDistance, playerLayer);
 
-        foreach (Collider target in targetsInRadius)
+        Collider playerCollider = targetsInRadius.Where(t => t.gameObject.CompareTag("Player")).FirstOrDefault();
+
+        if (playerCollider == null)
+            return false;
+
+        playerTransform = playerCollider.transform;
+        Vector3 playerPosition = playerTransform.position;
+        Vector3 dirToTarget = (playerPosition - enemyViewPosition).normalized;
+
+        // 2. Angle check
+        if (Vector3.Angle(enemyViewTransform.forward, dirToTarget) < viewAngle / 2f)
         {
-            Vector3 dirToTarget = (target.transform.position - eyesTransform.position).normalized;
+            float distToTarget = Vector3.Distance(enemyViewPosition, playerPosition);
 
-            // 2. Angle check
-            if (Vector3.Angle(eyesTransform.forward, dirToTarget) < viewAngle / 2f)
+            // 3. Line of Sight (Raycast) check
+            if (!Physics.Raycast(enemyViewPosition, dirToTarget, distToTarget, obstacleLayer))
             {
-                float distToTarget = Vector3.Distance(eyesTransform.position, target.transform.position);
-
-                // 3. Line of Sight (Raycast) check
-                if (!Physics.Raycast(eyesTransform.position, dirToTarget, distToTarget, obstacleLayer))
-                {
-                    playerTransform = target.transform;
-                    return true; // Player is visible!
-                }
+                return true; // Player is visible!
             }
         }
 
         return false;
     }
 
-    // Free, built-in debug view in Scene View (Zero performance impact in built game!)
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        if (eyesTransform == null) eyesTransform = transform;
+        Transform enemyViewTransform;
+        Vector3 enemyViewPosition;
+        float viewDistance, viewAngle;
+        TryGetFovParams(out enemyViewTransform, out enemyViewPosition, out viewDistance, out viewAngle);
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(eyesTransform.position, viewDistance);
+        //Gizmos.DrawWireSphere(enemyViewPosition, viewDistance);
 
-        Vector3 leftDir = Quaternion.Euler(0, -viewAngle / 2f, 0) * eyesTransform.forward;
-        Vector3 rightDir = Quaternion.Euler(0, viewAngle / 2f, 0) * eyesTransform.forward;
+        Vector3 leftDir = Quaternion.Euler(0, -viewAngle / 2f, 0) * enemyViewTransform.forward;
+        Vector3 rightDir = Quaternion.Euler(0, viewAngle / 2f, 0) * enemyViewTransform.forward;
 
-        Gizmos.DrawRay(eyesTransform.position, leftDir * viewDistance);
-        Gizmos.DrawRay(eyesTransform.position, rightDir * viewDistance);
+        Gizmos.DrawRay(enemyViewTransform.position, leftDir * viewDistance);
+        Gizmos.DrawRay(enemyViewTransform.position, rightDir * viewDistance);
+        Gizmos.DrawRay(enemyViewTransform.position, enemyViewTransform.forward * viewDistance);
+    }
+
+    private void TryGetFovParams(out Transform enemyViewTransform, out Vector3 enemyViewPosition, out float viewDistance, out float viewAngle)
+    {
+        enemyViewTransform = fov == null ? transform : fov.transform;
+        enemyViewPosition = enemyViewTransform.position;
+        viewDistance = fov == null ? 8f : fov.radius;
+        viewAngle = fov == null ? 100f : fov.angle;
     }
 }
