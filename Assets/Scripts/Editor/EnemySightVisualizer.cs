@@ -3,9 +3,9 @@ using UnityEditor;
 using UnityEngine;
 
 [InitializeOnLoad]
-public static class GlobalFOVVisualizer
+public static class EnemySightVisualizer
 {
-    static GlobalFOVVisualizer()
+    static EnemySightVisualizer()
     {
         // Subscribe to the Scene View update loop globally
         SceneView.duringSceneGui += OnSceneGUI;
@@ -13,28 +13,31 @@ public static class GlobalFOVVisualizer
 
     private static void OnSceneGUI(SceneView sceneView)
     {
-        FieldOfView[] enemiesFOVs = Object.FindObjectsByType<FieldOfView>(FindObjectsSortMode.None);
+        Alertness[] alertEnemies = Object.FindObjectsByType<Alertness>(FindObjectsSortMode.None);
 
-        foreach (FieldOfView enemyFOV in enemiesFOVs)
+        foreach (var enemy in alertEnemies)
         {
-            if (enemyFOV == null) continue;
+            if (enemy == null) continue;
+            if (enemy.sight == null) continue;
 
             // Choose color based on enemy state
             // TODO: this should be on a different script; ALERT Stage and FOV should be decoupled
 
             Color c = Color.green;
-            if (enemyFOV.alertStage == AlertStage.Intrigued)
-                c = Color.Lerp(Color.green, Color.red, enemyFOV.alertLevel / 100f);
-            else if (enemyFOV.alertStage == AlertStage.Alerted)
+            if (enemy.alertStage == AlertStage.Intrigued)
+                c = Color.Lerp(Color.green, Color.red, enemy.alertLevel / 100f);
+            else if (enemy.alertStage == AlertStage.Alerted)
                 c = Color.red;
+
+            FieldOfView fov = enemy.sight.fov;
 
             Handles.color = new Color(c.r, c.g, c.b, 0.1f);
             Handles.DrawSolidArc(
-                enemyFOV.transform.position,
-                enemyFOV.transform.up,
-                Quaternion.AngleAxis(-enemyFOV.angle / 2f, enemyFOV.transform.up) * enemyFOV.transform.forward,
-                enemyFOV.angle,
-                enemyFOV.radius);
+                fov.Position,
+                fov.Transform.up,
+                Quaternion.AngleAxis(-fov.Angle / 2f, enemy.transform.up) * enemy.transform.forward,
+                fov.Angle,
+                fov.Distance);
 
             //Handles.color = c;
             //enemyFOV.radius = Handles.ScaleValueHandle(

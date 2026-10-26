@@ -1,9 +1,12 @@
 using System.Linq;
 using UnityEngine;
+using System;
 
-public class EnemySight : MonoBehaviour
+
+[RequireComponent(typeof(FieldOfView))]
+public partial class EnemySight : MonoBehaviour
 {
-    [SerializeField] private FieldOfView fov;
+    public FieldOfView fov;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private LayerMask obstacleLayer;
 
@@ -18,13 +21,8 @@ public class EnemySight : MonoBehaviour
     {
         playerTransform = null;
 
-        Transform enemyViewTransform;
-        Vector3 enemyViewPosition;
-        float viewDistance, viewAngle;
-        TryGetFovParams(out enemyViewTransform, out enemyViewPosition, out viewDistance, out viewAngle);
-
         // 1. Distance check
-        Collider[] targetsInRadius = Physics.OverlapSphere(enemyViewPosition, viewDistance, playerLayer);
+        Collider[] targetsInRadius = Physics.OverlapSphere(fov.Position, fov.Distance, playerLayer);
 
         Collider playerCollider = targetsInRadius.Where(t => t.gameObject.CompareTag("Player")).FirstOrDefault();
 
@@ -33,15 +31,15 @@ public class EnemySight : MonoBehaviour
 
         playerTransform = playerCollider.transform;
         Vector3 playerPosition = playerTransform.position;
-        Vector3 dirToTarget = (playerPosition - enemyViewPosition).normalized;
+        Vector3 dirToTarget = (playerPosition - fov.Position).normalized;
 
         // 2. Angle check
-        if (Vector3.Angle(enemyViewTransform.forward, dirToTarget) < viewAngle / 2f)
+        if (Vector3.Angle(fov.Forward, dirToTarget) < fov.Angle / 2f)
         {
-            float distToTarget = Vector3.Distance(enemyViewPosition, playerPosition);
+            float distToTarget = Vector3.Distance(fov.Position, playerPosition);
 
             // 3. Line of Sight (Raycast) check
-            if (!Physics.Raycast(enemyViewPosition, dirToTarget, distToTarget, obstacleLayer))
+            if (!Physics.Raycast(fov.Position, dirToTarget, distToTarget, obstacleLayer))
             {
                 return true; // Player is visible!
             }
@@ -52,27 +50,14 @@ public class EnemySight : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Transform enemyViewTransform;
-        Vector3 enemyViewPosition;
-        float viewDistance, viewAngle;
-        TryGetFovParams(out enemyViewTransform, out enemyViewPosition, out viewDistance, out viewAngle);
-
         Gizmos.color = Color.yellow;
-        //Gizmos.DrawWireSphere(enemyViewPosition, viewDistance);
+        Gizmos.DrawWireSphere(fov.Position, fov.Distance);
 
-        Vector3 leftDir = Quaternion.Euler(0, -viewAngle / 2f, 0) * enemyViewTransform.forward;
-        Vector3 rightDir = Quaternion.Euler(0, viewAngle / 2f, 0) * enemyViewTransform.forward;
+        Vector3 leftDir = Quaternion.Euler(0, -fov.Angle / 2f, 0) * fov.Forward;
+        Vector3 rightDir = Quaternion.Euler(0, fov.Angle / 2f, 0) * fov.Forward;
 
-        Gizmos.DrawRay(enemyViewTransform.position, leftDir * viewDistance);
-        Gizmos.DrawRay(enemyViewTransform.position, rightDir * viewDistance);
-        Gizmos.DrawRay(enemyViewTransform.position, enemyViewTransform.forward * viewDistance);
-    }
-
-    private void TryGetFovParams(out Transform enemyViewTransform, out Vector3 enemyViewPosition, out float viewDistance, out float viewAngle)
-    {
-        enemyViewTransform = fov == null ? transform : fov.transform;
-        enemyViewPosition = enemyViewTransform.position;
-        viewDistance = fov == null ? 8f : fov.radius;
-        viewAngle = fov == null ? 100f : fov.angle;
+        Gizmos.DrawRay(fov.Position, leftDir * fov.Distance);
+        Gizmos.DrawRay(fov.Position, rightDir * fov.Distance);
+        Gizmos.DrawRay(fov.Position, fov.Forward * fov.Distance);
     }
 }
