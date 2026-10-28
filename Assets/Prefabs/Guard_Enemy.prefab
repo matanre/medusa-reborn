@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 1016977458297687977}
   - component: {fileID: 5858200374909452634}
   - component: {fileID: 7436743250458218256}
-  m_Layer: 6
+  - component: {fileID: 7918871256140798173}
+  m_Layer: 7
   m_Name: Guard_Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,6 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6831611653091642120}
+  - {fileID: 3366612914447260583}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &5858200374909452634
@@ -46,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc371a24ccb56f8438b542cda8431fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySight
-  fov: {fileID: 53155521153827438}
+  fov: {fileID: 7918871256140798173}
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -65,8 +67,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef0f7254d8f06d848bcd97152ed03d40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Alertness
+  sight: {fileID: 5858200374909452634}
   alertStage: 0
   alertLevel: 0
+  timeToSpot: 3
+  timeToForget: 1.5
+--- !u!114 &7918871256140798173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84545134980652284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1cce46637b3a4345b863fd7b51927a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FieldOfView
+  radius: 9
+  horizontalAngle: 80
+  viewOrigin: {fileID: 7722236556501681084}
 --- !u!1 &1679307269363632343
 GameObject:
   m_ObjectHideFlags: 0
@@ -77,10 +97,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6831611653091642120}
   - component: {fileID: 437791167643125914}
-  - component: {fileID: 8169190211214341151}
-  m_Layer: 6
-  m_Name: Guard_Body
-  m_TagString: Player
+  m_Layer: 7
+  m_Name: Guard_Collider
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,11 +115,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2313936980737720060}
   - {fileID: 3681256051165331069}
-  - {fileID: 3366612914447260583}
   m_Father: {fileID: 1016977458297687977}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &437791167643125914
@@ -126,33 +144,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &8169190211214341151
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679307269363632343}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 80
-  m_CollisionDetection: 1
 --- !u!1 &2183403871049392587
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,9 +153,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2313936980737720060}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Vision_Origin
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -197,7 +188,7 @@ GameObject:
   - component: {fileID: 6088026570639360918}
   - component: {fileID: 9148349563996723212}
   - component: {fileID: 7476532615508922448}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Eyes (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,9 +297,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3366612914447260583}
-  m_Layer: 6
-  m_Name: Art
-  m_TagString: Player
+  m_Layer: 7
+  m_Name: Guard_Art
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -322,12 +313,12 @@ Transform:
   m_GameObject: {fileID: 4189067441356702473}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7159040340134799533}
-  m_Father: {fileID: 6831611653091642120}
+  m_Father: {fileID: 1016977458297687977}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4828837537179108884
 GameObject:
@@ -341,7 +332,7 @@ GameObject:
   - component: {fileID: 2838882816123903167}
   - component: {fileID: 4506705224680444117}
   - component: {fileID: 3634864013322498074}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Eyes (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -452,9 +443,9 @@ GameObject:
   - component: {fileID: 7159040340134799533}
   - component: {fileID: 200294998487827017}
   - component: {fileID: 6405502383626099083}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: --Placeholder--
-  m_TagString: Player
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -543,10 +534,9 @@ GameObject:
   - component: {fileID: 6290666972102442342}
   - component: {fileID: 2039435114763004728}
   - component: {fileID: 5014295829443925796}
-  - component: {fileID: 53155521153827438}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Eyes
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -560,7 +550,7 @@ Transform:
   m_GameObject: {fileID: 8010690486903461465}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: -0.21, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -639,20 +629,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &53155521153827438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010690486903461465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1cce46637b3a4345b863fd7b51927a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GuardManager
-  radius: 10
-  angle: 90
 --- !u!1 &9120779473152244989
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,9 +638,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3681256051165331069}
-  m_Layer: 6
+  - component: {fileID: 7225687092167422123}
+  m_Layer: 7
   m_Name: Ground_Check
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -684,3 +661,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6831611653091642120}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7225687092167422123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9120779473152244989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff50458ecdf2d24caf21b45eecf6264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GizmoIndicator
+  color: {r: 0.18049127, g: 0.6005696, b: 0.735849, a: 1}
+  size: 0.2

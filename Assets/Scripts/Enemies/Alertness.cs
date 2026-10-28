@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 public enum AlertStage
@@ -11,9 +10,22 @@ public enum AlertStage
 [RequireComponent(typeof(EnemySight))]
 public class Alertness : MonoBehaviour
 {
+    [Header("Components")]
     public EnemySight sight;
-    public AlertStage alertStage;
-    [Range(0, 100)] public float alertLevel; // 0: Peaceful, 100: Alerted
+
+    [Header("State & Levels")]
+    public AlertStage alertStage = AlertStage.Peaceful;
+    [Range(0, 100)] public float alertLevel = 0f; // 0: Peaceful, 100: Fully Busted
+
+    [Header("Design-Friendly Timing (In Seconds)")]
+    [Tooltip("Time in seconds it takes to go from Peaceful (0) to Busted (100) while the player is continuously in sight.")]
+    [SerializeField] private float timeToSpot = 2.0f;
+
+    [Tooltip("Time in seconds it takes for the alert meter to fully drain back down to 0 after the player breaks line of sight.")]
+    [SerializeField] private float timeToForget = 3.0f;
+
+    public float AlertPercentage => alertLevel;
+
 
     private void Awake()
     {
@@ -21,41 +33,84 @@ public class Alertness : MonoBehaviour
             sight = GetComponent<EnemySight>();
 
         alertStage = AlertStage.Peaceful;
-        alertLevel = 0;
+        alertLevel = 0f;
     }
 
     private void Update()
     {
-        bool playerInSight = sight.CanSeePlayer(out _);
-        UpdateAlertState(playerInSight);
+        bool playerInSight = sight.CanSeePlayer(out Transform playerTransform);
+        UpdateAlertState(playerInSight, playerTransform);
     }
 
-    private void UpdateAlertState(bool playerInSight)
+    private void UpdateAlertState(bool playerInSight, Transform playerTransform)
     {
-        switch (alertStage)
+        // Dynamically calculate speed based on user-defined seconds
+        float buildRate = 100f / Mathf.Max(timeToSpot, 0.01f);
+        float decayRate = 100f / Mathf.Max(timeToForget, 0.01f);
+
+        if (playerInSight)
+        {
+            // Fill up the alert meter over time
+            alertLevel += buildRate * Time.deltaTime;
+            alertLevel = Mathf.Clamp(alertLevel, 0f, 100f);
+
+            // Optional: Face the player when spotted
+            Vector3 lookDir = (playerTransform.position - transform.position);
+            lookDir.y = 0;
+            if (lookDir != Vector3.zero)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDir), 8f * Time.deltaTime);
+            }
+        }
+        else
+        {
+            // Drain the alert meter when player is hidden
+            alertLevel -= decayRate * Time.deltaTime;
+            alertLevel = Mathf.Clamp(alertLevel, 0f, 100f);
+        }
+
+        // Determine Stage based on alertLevel thresholds
+        AlertStage previousStage = alertStage;
+
+        if (alertLevel >= 100f)
+        {
+            alertStage = AlertStage.Alerted; // BUSTED / Game Over
+        }
+        else if (alertLevel > 0f)
+        {
+            alertStage = AlertStage.Intrigued; // Suspicious / Yellow
+        }
+        else
+        {
+            alertStage = AlertStage.Peaceful; // Patrol / Green
+        }
+
+        // If stage changed, trigger any necessary behavior changes
+        if (previousStage != alertStage)
+        {
+            HandleStageTransition(alertStage);
+        }
+    }
+
+    private void HandleStageTransition(AlertStage newStage)
+    {
+        switch (newStage)
         {
             case AlertStage.Peaceful:
-                if (playerInSight)
-                    alertStage = AlertStage.Intrigued;
+                Debug.Log($"{name}: Returned to Peaceful.");
                 break;
             case AlertStage.Intrigued:
-                if (playerInSight)
-                {
-                    alertLevel++;
-                    if (alertLevel >= 100)
-                        alertStage = AlertStage.Alerted;
-                }
-                else
-                {
-                    alertLevel--;
-                    if (alertLevel <= 0)
-                        alertStage = AlertStage.Peaceful;
-                }
+                Debug.Log($"{name}: Now Intrigued/Suspicious.");
                 break;
             case AlertStage.Alerted:
-                if (!playerInSight)
-                    alertStage = AlertStage.Intrigued;
+                TriggerGameOver();
                 break;
         }
+    }
+
+    private void TriggerGameOver()
+    {
+        Debug.LogWarning($"<color=red><b>[GAME OVER] {name} caught the player!</b></color>");
+        // TODO: Hook up your game over UI or scene reload here
     }
 }

@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(CapsuleCollider))]
 public class GorgonController : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -41,8 +39,8 @@ public class GorgonController : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        capsuleCollider = GetComponent<CapsuleCollider>();
+        rb = GetComponentInChildren<Rigidbody>();
+        capsuleCollider = GetComponentInChildren<CapsuleCollider>();
     }
 
     private void FixedUpdate()

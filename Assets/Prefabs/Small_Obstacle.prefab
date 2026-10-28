@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8647156974679156922}
+  - component: {fileID: 3301606039286262909}
   m_Layer: 9
   m_Name: Small_Obstacle
   m_TagString: Untagged
@@ -24,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3191902312947037633}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.07754606, z: -0, w: 0.9969888}
+  m_LocalRotation: {x: 0, y: 0.07754558, z: 0, w: 0.99698883}
   m_LocalPosition: {x: 32.28, y: 0, z: -4.04}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
@@ -32,6 +33,22 @@ Transform:
   - {fileID: 1790630895719366102}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 8.895, z: 0}
+--- !u!208 &3301606039286262909
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3191902312947037633}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &4837972690039738783
 GameObject:
   m_ObjectHideFlags: 0

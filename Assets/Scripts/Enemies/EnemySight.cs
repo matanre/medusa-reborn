@@ -24,7 +24,7 @@ public partial class EnemySight : MonoBehaviour
         // 1. Distance check
         Collider[] targetsInRadius = Physics.OverlapSphere(fov.Position, fov.Distance, playerLayer);
 
-        Collider playerCollider = targetsInRadius.Where(t => t.gameObject.CompareTag("Player")).FirstOrDefault();
+        Collider playerCollider = targetsInRadius.Where(t => t.CompareTag("Player")).FirstOrDefault();
 
         if (playerCollider == null)
             return false;
@@ -51,7 +51,7 @@ public partial class EnemySight : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(fov.Position, fov.Distance);
+        //Gizmos.DrawWireSphere(fov.Position, fov.Distance);
 
         Vector3 leftDir = Quaternion.Euler(0, -fov.Angle / 2f, 0) * fov.Forward;
         Vector3 rightDir = Quaternion.Euler(0, fov.Angle / 2f, 0) * fov.Forward;

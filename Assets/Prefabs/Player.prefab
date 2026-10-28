@@ -245,7 +245,6 @@ GameObject:
   - component: {fileID: 7585672444205704955}
   - component: {fileID: 8808911635739359468}
   - component: {fileID: 5677539225408549508}
-  - component: {fileID: 4519612718509782833}
   - component: {fileID: 5373641674779582437}
   m_Layer: 6
   m_Name: Player_Body
@@ -322,34 +321,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 1
---- !u!114 &4519612718509782833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5134328950984701491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d2ee0fe3e24efe41a11ce63268b6b41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GorgonController
-  moveSpeed: 4.5
-  crouchSpeedMultiplier: 0.5
-  jumpForce: 6.5
-  gravityScale: 2.5
-  rotationSpeed: 7
-  isGrounded: 0
-  groundCheck: {fileID: 1625633156133465657}
-  groundCheckRadius: 0.12
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  groundCheckOffset: {x: 0, y: -0.05, z: 0}
-  normalHeight: 2
-  crouchHeight: 1
-  normalCenter: {x: 0, y: 0, z: 0}
-  crouchCenter: {x: 0, y: -0.5, z: 0}
 --- !u!114 &5373641674779582437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,6 +423,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3749184326305154539}
+  - component: {fileID: 9091415469121729484}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -475,6 +447,34 @@ Transform:
   - {fileID: 7585672444205704955}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9091415469121729484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8335409365505969285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d2ee0fe3e24efe41a11ce63268b6b41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GorgonController
+  moveSpeed: 4.5
+  crouchSpeedMultiplier: 0.5
+  jumpForce: 6.5
+  gravityScale: 2.5
+  rotationSpeed: 12
+  isGrounded: 0
+  groundCheck: {fileID: 1625633156133465657}
+  groundCheckRadius: 0.12
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  groundCheckOffset: {x: 0, y: -0.05, z: 0}
+  normalHeight: 2
+  crouchHeight: 1
+  normalCenter: {x: 0, y: 0, z: 0}
+  crouchCenter: {x: 0, y: -0.5, z: 0}
 --- !u!1 &8784017557567044062
 GameObject:
   m_ObjectHideFlags: 0
