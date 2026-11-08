@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCrouch : MonoBehaviour
 {
@@ -14,8 +15,11 @@ public class PlayerCrouch : MonoBehaviour
     public float overheadClearance = 0.6f; // How much space is needed to stand up
     public LayerMask whatIsCeiling;       // Layers that count as a roof/tunnel
 
+    private bool _isInitialized = false;
+    private InputAction _crouchAction;
     private float _defaultYScale;
-    public bool IsCrouching { get; internal set; }
+    private bool _isCrouching;
+    public bool IsCrouching => _isCrouching;
 
     private void Awake()
     {
@@ -29,30 +33,42 @@ public class PlayerCrouch : MonoBehaviour
         _defaultYScale = transform.localScale.y;
     }
 
+    public void Init(InputAction crouchAction)
+    {
+        _crouchAction = crouchAction;
+        _isInitialized = true;
+    }
+
     void Update()
     {
-        // 1. Handle the Ceiling Check (prevent standing up in low tunnels)
-        if (!IsCrouching)
-        {
-            // If the player wants to stand up, check if there's a ceiling right above them
-            // (Using a Physics CheckSphere or Raycast upward from the head)
-            bool blockedAbove = Physics.CheckSphere(headTransform.position, overheadClearance, whatIsCeiling);
+        if (!_isInitialized) return;
 
-            if (blockedAbove)
-            {
-                // Force stay crouching until clear
-                IsCrouching = true;
-            }
+        if (_crouchAction.WasPressedThisFrame())
+        {
+            _isCrouching = !_isCrouching;
         }
 
-        // 2. Determine target scale
-        var targetYScale = IsCrouching ? (_defaultYScale * crouchHeightMultiplier) : _defaultYScale;
+        CheckCieling();
 
-        // 3. Smoothly transition scale using MoveTowards (safe from frame-rate snapping)
+        var targetYScale = _isCrouching ? (_defaultYScale * crouchHeightMultiplier) : _defaultYScale;
         float currScale = transform.localScale.y;
         float updatedScale = Mathf.MoveTowards(currScale, targetYScale, Time.deltaTime * crouchTransitionSpeed);
 
-        // Apply the scale to the local transform (Y axis only)
         transform.localScale = new Vector3(transform.localScale.x, updatedScale, transform.localScale.z);
+    }
+
+    private void CheckCieling()
+    {
+        if (_isCrouching) return;
+
+        // If the player wants to stand up, check if there's a ceiling right above them
+        // (Using a Physics CheckSphere or Raycast upward from the head)
+        bool blockedAbove = Physics.CheckSphere(headTransform.position, overheadClearance, whatIsCeiling);
+
+        if (blockedAbove)
+        {
+            // Force stay crouching until clear
+            _isCrouching = true;
+        }
     }
 }

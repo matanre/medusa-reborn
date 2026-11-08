@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 groundCheckOffset = new Vector3(0f, -0.05f, 0f);
 
     public bool IsGrounded { get; private set; }
-    public bool IsCrouching { get; private set; }
+    public bool IsCrouching => crouchHandler.IsCrouching;
     public bool IsPushing { get; private set; }
     public bool FacingRight { get; private set; } = true;
     public float ExternalSpeedMultiplier { get; set; } = 1.0f;
@@ -32,13 +33,21 @@ public class PlayerController : MonoBehaviour
     private PlayerCrouch crouchHandler;
     private Vector2 moveInput;
     private bool jumpRequested;
-    private bool crouchPressed;
+    //private bool crouchPressed;
+    //private InputAction crouchAction;
 
     private void Awake()
     {
         rb = GetComponentInChildren<Rigidbody>();
         capsuleCollider = GetComponentInChildren<CapsuleCollider>();
         crouchHandler = GetComponentInChildren<PlayerCrouch>();
+    }
+
+    void Start()
+    {
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        InputAction crouchAction = playerInput.actions["Crouch"];
+        crouchHandler.Init(crouchAction);
     }
 
     private void FixedUpdate()
@@ -58,6 +67,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleFacingDirection();
+        //CheckCrouch();
     }
 
     // --- NEW INPUT SYSTEM MESSAGE CALLBACKS ---
@@ -76,15 +86,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void OnCrouch(InputValue value)
-    {
-        crouchPressed = value.isPressed;
-        crouchHandler.IsCrouching = crouchPressed;
+    ////public void OnCrouch(InputValue value)
+    ////{
+    ////    if (value.isPressed && IsGrounded)
+    ////    {
+    ////        crouchPressed = true;
+    ////    }
+    ////}
 
-        // TODO: if going from crouch to stand, make sure the player can stand up
-    }
+    //// ------------------------------------------
 
-    // ------------------------------------------
+    //private void CheckCrouch()
+    //{
+    //    if (crouchAction != null && IsGrounded)
+    //    {
+    //        crouchHandler.CrouchPressed = crouchAction.IsPressed();
+    //    }
+    //}
 
     private void CheckGroundStatus()
     {
