@@ -6,6 +6,7 @@ public class GorgonController : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 4.5f;
     [SerializeField] private float crouchSpeedMultiplier = 0.5f;
+    [SerializeField] private float pushSpeedMultiplier = 0.5f;
     [SerializeField] private float jumpForce = 6.5f;
     [SerializeField] private float gravityScale = 2.5f;
 
@@ -27,6 +28,7 @@ public class GorgonController : MonoBehaviour
 
     public bool IsGrounded { get; private set; }
     public bool IsCrouching { get; private set; }
+    public bool IsPushing { get; private set; }
     public bool FacingRight { get; private set; } = true;
     public float ExternalSpeedMultiplier { get; set; } = 1.0f;
 
@@ -118,6 +120,11 @@ public class GorgonController : MonoBehaviour
         // moveInput.x = Left/Right (X axis)
         // moveInput.y = Forward/Backward (Z axis in 3D space)
         Vector3 targetVelocity = new Vector3(moveInput.x * currentSpeed, rb.linearVelocity.y, moveInput.y * currentSpeed);
+        
+        if (moveInput.x != 0 || moveInput.y != 0)
+        {
+            Debug.Log($"{name}: inputs (x, y) = ({moveInput.x}, {moveInput.y})");
+        }
 
         rb.linearVelocity = targetVelocity;
     }
