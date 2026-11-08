@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8fb854dea802cb643abbe3032b6a17c8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Post Processing Profiles/PP_URP/MDC_Demo.asset
+  uploadId: 909590

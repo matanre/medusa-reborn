@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: a255af26713aa134f90d818f327d5785
+labels:
+- Materials
+- ornaments
+- pbr
+- pillars
+timeCreated: 1484610961
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: materials
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Materials/Mat_Cave
+    Mesh/CATA_Details.mat
+  uploadId: 909590

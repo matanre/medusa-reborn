@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f390851e4c905e34cbd9cd8bbd035b59
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Materials/Mat_Helpers/LightBlocker.mat
+  uploadId: 909590

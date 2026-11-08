@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c86161f3fec8e064f820b0003c1a6796
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Terrain Layers/Terrain_B/GrassDark_LayerB.terrainlayer
+  uploadId: 909590

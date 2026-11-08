@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cfd8a708f387031499fecd328aa83ba3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Prefabs/Helpers/MaterialCube.prefab
+  uploadId: 909590

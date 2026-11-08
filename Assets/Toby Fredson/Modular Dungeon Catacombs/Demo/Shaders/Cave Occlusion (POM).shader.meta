@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 4f0214ebe68054441b2ea8ce44da35da
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Shaders/Cave Occlusion
+    (POM).shader
+  uploadId: 909590

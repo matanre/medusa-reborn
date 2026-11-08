@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: feafcbeb3f3ad8340b06e917c9799243
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Shaders/Grass Foliage.shader
+  uploadId: 909590

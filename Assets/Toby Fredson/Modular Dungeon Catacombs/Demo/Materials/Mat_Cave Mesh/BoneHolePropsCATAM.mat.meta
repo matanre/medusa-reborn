@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 015e70d02e32c474f8bf2f2e0bc464ec
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Materials/Mat_Cave
+    Mesh/BoneHolePropsCATAM.mat
+  uploadId: 909590

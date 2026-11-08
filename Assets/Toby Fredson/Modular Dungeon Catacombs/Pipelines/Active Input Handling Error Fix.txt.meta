@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0ba93f17fa6be1d478ac6ebe6cbe5eab
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Pipelines/Active Input
+    Handling Error Fix.txt
+  uploadId: 909590
