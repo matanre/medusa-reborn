@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GorgonController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 4.5f;
@@ -20,12 +21,6 @@ public class GorgonController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Vector3 groundCheckOffset = new Vector3(0f, -0.05f, 0f);
 
-    [Header("Crouch Settings")]
-    [SerializeField] private float normalHeight = 2.0f;
-    [SerializeField] private float crouchHeight = 1.0f;
-    [SerializeField] private Vector3 normalCenter = new Vector3(0, 0, 0);
-    [SerializeField] private Vector3 crouchCenter = new Vector3(0, -0.5f, 0);
-
     public bool IsGrounded { get; private set; }
     public bool IsCrouching { get; private set; }
     public bool IsPushing { get; private set; }
@@ -34,7 +29,7 @@ public class GorgonController : MonoBehaviour
 
     private Rigidbody rb;
     private CapsuleCollider capsuleCollider;
-
+    private PlayerCrouch crouchHandler;
     private Vector2 moveInput;
     private bool jumpRequested;
     private bool crouchPressed;
@@ -43,6 +38,7 @@ public class GorgonController : MonoBehaviour
     {
         rb = GetComponentInChildren<Rigidbody>();
         capsuleCollider = GetComponentInChildren<CapsuleCollider>();
+        crouchHandler = GetComponentInChildren<PlayerCrouch>();
     }
 
     private void FixedUpdate()
@@ -61,7 +57,6 @@ public class GorgonController : MonoBehaviour
 
     private void Update()
     {
-        HandleCrouchState();
         HandleFacingDirection();
     }
 
@@ -84,6 +79,9 @@ public class GorgonController : MonoBehaviour
     public void OnCrouch(InputValue value)
     {
         crouchPressed = value.isPressed;
+        crouchHandler.IsCrouching = crouchPressed;
+
+        // TODO: if going from crouch to stand, make sure the player can stand up
     }
 
     // ------------------------------------------
@@ -163,35 +161,6 @@ public class GorgonController : MonoBehaviour
         }
     }
 
-    //private void HandleFacingDirection()
-    //{
-    //    Vector3 targetDirection = Vector3.zero;
-
-    //    // Prioritize or snap to primary cardinal directions
-    //    if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
-    //    {
-    //        // Primary horizontal movement (A / D)
-    //        if (moveInput.x > 0.1f)
-    //            targetDirection = Vector3.right;    // Face Right (+X)
-    //        else if (moveInput.x < -0.1f)
-    //            targetDirection = Vector3.left;     // Face Left (-X)
-    //    }
-    //    else
-    //    {
-    //        // Primary depth movement (W / S)
-    //        if (moveInput.y > 0.1f)
-    //            targetDirection = Vector3.forward;  // Face Away / Deep (+Z)
-    //        else if (moveInput.y < -0.1f)
-    //            targetDirection = Vector3.back;     // Face Camera / Down (-Z)
-    //    }
-
-    //    // Only apply rotation if we have a clear target direction
-    //    if (targetDirection != Vector3.zero)
-    //    {
-    //        Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-    //        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-    //    }
-    //}
 
     private void ExecuteJump()
     {
@@ -210,26 +179,6 @@ public class GorgonController : MonoBehaviour
         if (!IsGrounded)
         {
             rb.AddForce(Physics.gravity * (gravityScale - 1f) * rb.mass);
-        }
-    }
-
-    private void HandleCrouchState()
-    {
-        if (crouchPressed && !IsCrouching)
-        {
-            IsCrouching = true;
-            capsuleCollider.height = crouchHeight;
-            capsuleCollider.center = crouchCenter;
-        }
-        else if (!crouchPressed && IsCrouching)
-        {
-            bool ceilingAbove = Physics.Raycast(transform.position, Vector3.up, normalHeight * 0.6f);
-            if (!ceilingAbove)
-            {
-                IsCrouching = false;
-                capsuleCollider.height = normalHeight;
-                capsuleCollider.center = normalCenter;
-            }
         }
     }
 }
