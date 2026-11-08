@@ -4,6 +4,8 @@ using Unity.Cinemachine;
 [RequireComponent(typeof(Collider))]
 public class CameraSwitchZone : MonoBehaviour
 {
+    public static CinemachineCamera ActiveCamera { get; private set; }
+
     [Header("References")]
     [Tooltip("The Cinemachine Camera to switch to when the player enters this zone.")]
     public CinemachineCamera targetCamera;
@@ -18,31 +20,48 @@ public class CameraSwitchZone : MonoBehaviour
     // Static timer shared globally across all CameraSwitchZone instances
     private static float _lastSwitchTime = -999f;
 
-    private void OnTriggerEnter(Collider other)
+    private bool _isInsideZone = false;
+
+    private void OnTriggerStay(Collider other)
     {
+        if (ActiveCamera == targetCamera) return;
+
         if (other.CompareTag("Player"))
         {
-            if (Time.time - _lastSwitchTime < cooldownTime)
-            {
-                return;
-            }
-
-            if (targetCamera == null)
-            {
-                Debug.LogWarning($"Target Camera is not assigned on trigger zone: {gameObject.name}", this);
-                return;
-            }
-
-            // Find all Cinemachine cameras in the scene, set them to 0, and activate the target one
-            CinemachineCamera[] allCameras = FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
-            foreach (var cam in allCameras)
-            {
-                cam.Priority = (cam == targetCamera) ? 11 : 0;
-            }
-
-            // Record the global switch time
-            _lastSwitchTime = Time.time;
+            _isInsideZone = true;
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        _isInsideZone = false;
+    }
+
+    private void LateUpdate()
+    {
+        if (!_isInsideZone) return;
+
+        if (Time.time - _lastSwitchTime < cooldownTime)
+        {
+            return;
+        }
+
+        if (targetCamera == null)
+        {
+            Debug.LogWarning($"Target Camera is not assigned on trigger zone: {gameObject.name}", this);
+            return;
+        }
+
+        // Find all Cinemachine cameras in the scene, set them to 0, and activate the target one
+        CinemachineCamera[] allCameras = FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
+        foreach (var cam in allCameras)
+        {
+            cam.Priority = (cam == targetCamera) ? 11 : 0;
+        }
+
+        // Record the global switch time
+        _lastSwitchTime = Time.time;
+        ActiveCamera = targetCamera;
     }
 
     // Automatically draws this zone's collider gizmo in the Scene view
