@@ -1,15 +1,7 @@
 fileFormatVersion: 2
-guid: 3b0764040cd29ae41b51d6c65d171143
+guid: f0afd6821aeb3d947b1ea4d5996c03ab
 PrefabImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 212016
-  packageName: Modular Dungeon - Catacombs
-  packageVersion: 3.0
-  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Prefabs/Vegetation/Trees
-    (Background)/PTB_Simple Planes/TreeBillboardCATAM_A.prefab
-  uploadId: 909590
