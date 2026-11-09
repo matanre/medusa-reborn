@@ -18,7 +18,7 @@ public class CameraSwitchZone : MonoBehaviour
     public Color gizmoColor = Color.mediumPurple * new Color(1,1,1,0.2f);
 
     // Static timer shared globally across all CameraSwitchZone instances
-    private static float _lastSwitchTime = -999f;
+    private static float _lastSwitchTime = float.MinValue;
 
     private bool _isInsideZone = false;
 

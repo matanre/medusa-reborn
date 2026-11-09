@@ -19,12 +19,20 @@ public class PlayerCrouch : MonoBehaviour
     private InputAction _crouchAction;
     private float _defaultYScale;
     private bool _isCrouching;
+    private PlayerController _ctrl;
+    private float _lastClickTime = float.MinValue;
+
     public bool IsCrouching => _isCrouching;
+    public bool CanCrouch => _ctrl.IsGrounded && !IsCrouching;
+    public bool CanStandUp => _ctrl.IsGrounded && IsCrouching && !CielingTouchCheck();
 
     private void Awake()
     {
         capsuleCollider = GetComponentInChildren<CapsuleCollider>();
         Assert.NotNull(capsuleCollider, nameof(capsuleCollider));
+
+        _ctrl = GetComponent<PlayerController>();
+        Assert.NotNull(_ctrl, nameof(PlayerController));
     }
 
     void Start()
@@ -43,23 +51,40 @@ public class PlayerCrouch : MonoBehaviour
     {
         if (!_isInitialized) return;
 
-        if (_crouchAction.WasPressedThisFrame())
+        ModifyHeight();
+
+        if (!_crouchAction.WasPressedThisFrame())
+            return;
+
+        // TODO: check if spam press prevention needed
+        if (Time.time - _lastClickTime < crouchTransitionSpeed * 1.5)
         {
-            _isCrouching = !_isCrouching;
+            // Not enough time has passed, spam detected
+            return;
         }
 
-        CheckCieling();
+        // Check validity of the action (either stand up or crouch)
+        if (_isCrouching && CanStandUp)
+        {
+            _isCrouching = false;
+        }
+        else if (CanCrouch)
+        {
+            _isCrouching = true;
+        }
+    }
 
+    private void ModifyHeight()
+    {
         var targetYScale = _isCrouching ? (_defaultYScale * crouchHeightMultiplier) : _defaultYScale;
         float currScale = transform.localScale.y;
         float updatedScale = Mathf.MoveTowards(currScale, targetYScale, Time.deltaTime * crouchTransitionSpeed);
 
         transform.localScale = new Vector3(transform.localScale.x, updatedScale, transform.localScale.z);
     }
-
-    private void CheckCieling()
+    private bool CielingTouchCheck()
     {
-        if (_isCrouching) return;
+        //if (_isCrouching) return false;
 
         // If the player wants to stand up, check if there's a ceiling right above them
         // (Using a Physics CheckSphere or Raycast upward from the head)
@@ -70,5 +95,7 @@ public class PlayerCrouch : MonoBehaviour
             // Force stay crouching until clear
             _isCrouching = true;
         }
+
+        return blockedAbove;
     }
 }
