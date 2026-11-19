@@ -85,24 +85,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    ////public void OnCrouch(InputValue value)
-    ////{
-    ////    if (value.isPressed && IsGrounded)
-    ////    {
-    ////        crouchPressed = true;
-    ////    }
-    ////}
-
-    //// ------------------------------------------
-
-    //private void CheckCrouch()
-    //{
-    //    if (crouchAction != null && IsGrounded)
-    //    {
-    //        crouchHandler.CrouchPressed = crouchAction.IsPressed();
-    //    }
-    //}
-
     private void CheckGroundStatus()
     {
         if (groundCheck != null)
@@ -144,85 +126,6 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = targetVelocity;
     }
 
-    private void HandleFacingDirection()
-{
-    // 1. Guard Clause: Stop immediately if there is no significant input
-    if (moveInput.sqrMagnitude < 0.01f)
-        return;
-
-    Vector3 targetDirection = Vector3.zero;
-
-    // 2. Determine cardinal direction based on the stronger axis input
-    if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
-    {
-        if (moveInput.x > 0.1f)
-            targetDirection = Vector3.right;    // Face Right (+X)
-        else if (moveInput.x < -0.1f)
-            targetDirection = Vector3.left;     // Face Left (-X)
-    }
-    else
-    {
-        if (moveInput.y > 0.1f)
-            targetDirection = Vector3.forward;  // Face Away / Deep (+Z)
-        else if (moveInput.y < -0.1f)
-            targetDirection = Vector3.back;     // Face Camera / Down (-Z)
-    }
-
-    // 3. Smoothly and safely rotate towards target direction without spinning bugs
-    if (targetDirection != Vector3.zero)
-    {
-        Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-        
-        // RotateTowards prevents quaternion flipping / 360-degree spin glitches
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation, 
-            targetRotation, 
-            rotationSpeed * 50f * Time.deltaTime // Multiplied by 50 to match typical degrees/sec speeds
-        );
-
-        // Ensure physics doesn't retain unwanted angular spin
-        if (rb != null)
-        {
-            rb.angularVelocity = Vector3.zero;
-        }
-    }
-}
-
-    //private void HandleFacingDirection()
-    //{
-    //    // 1. Guard Clause: Stop immediately if there is no significant input (deadzone threshold)
-    //    if (moveInput.sqrMagnitude < 0.01f)
-    //        return;
-
-    //    Vector3 targetDirection = Vector3.zero;
-
-    //    // 2. Determine cardinal direction based on the stronger axis input
-    //    if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
-    //    {
-    //        // Primary horizontal movement (A / D)
-    //        if (moveInput.x > 0.1f)
-    //            targetDirection = Vector3.right;    // Face Right (+X)
-    //        else if (moveInput.x < -0.1f)
-    //            targetDirection = Vector3.left;     // Face Left (-X)
-    //    }
-    //    else
-    //    {
-    //        // Primary depth movement (W / S)
-    //        if (moveInput.y > 0.1f)
-    //            targetDirection = Vector3.forward;  // Face Away / Deep (+Z)
-    //        else if (moveInput.y < -0.1f)
-    //            targetDirection = Vector3.back;     // Face Camera / Down (-Z)
-    //    }
-
-    //    // 3. Smoothly rotate towards target direction
-    //    if (targetDirection != Vector3.zero)
-    //    {
-    //        Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-    //        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-    //    }
-    //}
-
-
     private void ExecuteJump()
     {
         if (!IsGrounded)
@@ -240,6 +143,50 @@ public class PlayerController : MonoBehaviour
         if (!IsGrounded)
         {
             rb.AddForce(Physics.gravity * (gravityScale - 1f) * rb.mass);
+        }
+    }
+
+    private void HandleFacingDirection()
+    {
+        // 1. Guard Clause: Stop immediately if there is no significant input
+        if (moveInput.sqrMagnitude < 0.01f)
+            return;
+
+        Vector3 targetDirection = Vector3.zero;
+
+        // 2. Determine cardinal direction based on the stronger axis input
+        if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
+        {
+            if (moveInput.x > 0.1f)
+                targetDirection = Vector3.right;    // Face Right (+X)
+            else if (moveInput.x < -0.1f)
+                targetDirection = Vector3.left;     // Face Left (-X)
+        }
+        else
+        {
+            if (moveInput.y > 0.1f)
+                targetDirection = Vector3.forward;  // Face Away / Deep (+Z)
+            else if (moveInput.y < -0.1f)
+                targetDirection = Vector3.back;     // Face Camera / Down (-Z)
+        }
+
+        // 3. Smoothly and safely rotate towards target direction without spinning bugs
+        if (targetDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+        
+            // RotateTowards prevents quaternion flipping / 360-degree spin glitches
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation, 
+                targetRotation, 
+                rotationSpeed * 50f * Time.deltaTime // Multiplied by 50 to match typical degrees/sec speeds
+            );
+
+            // Ensure physics doesn't retain unwanted angular spin
+            if (rb != null)
+            {
+                rb.angularVelocity = Vector3.zero;
+            }
         }
     }
 }
