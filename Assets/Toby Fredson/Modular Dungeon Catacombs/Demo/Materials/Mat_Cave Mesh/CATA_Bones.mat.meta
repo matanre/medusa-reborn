@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 31747e78eafba60439ed60f112096897
+labels:
+- Materials
+- catacombs
+- dungeon
+- graves
+- pbr
+- skull
+- skulls
+- tombstone
+timeCreated: 1484612312
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: materials
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Materials/Mat_Cave
+    Mesh/CATA_Bones.mat
+  uploadId: 909590

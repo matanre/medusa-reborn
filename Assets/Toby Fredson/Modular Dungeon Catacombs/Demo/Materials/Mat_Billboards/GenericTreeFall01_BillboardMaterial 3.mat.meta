@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f21549fb1447ee54f8a246e0025c2b34
+timeCreated: 1543147770
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Materials/Mat_Billboards/GenericTreeFall01_BillboardMaterial
+    3.mat
+  uploadId: 909590

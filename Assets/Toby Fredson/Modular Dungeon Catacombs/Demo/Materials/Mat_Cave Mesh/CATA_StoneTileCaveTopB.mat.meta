@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: 77043f79a3faa364ea62d4adca05803a
+labels:
+- HQ
+- Materials
+- catacombs
+- cave
+- dirt
+- dungeon
+- environment
+- ground
+- rocks
+- ruins
+timeCreated: 1485287311
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: materials
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Materials/Mat_Cave
+    Mesh/CATA_StoneTileCaveTopB.mat
+  uploadId: 909590

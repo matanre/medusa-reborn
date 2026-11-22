@@ -1,0 +1,26 @@
+fileFormatVersion: 2
+guid: 3e467caf19a2bf947ab04811c09a66bc
+labels:
+- Materials
+- bricks
+- buildings
+- catacombs
+- dungeon
+- pbr
+- props
+- stones
+- walls
+timeCreated: 1484606560
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: materials
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Materials/Mat_Cave
+    Mesh/CATA_FloorA 3.mat
+  uploadId: 909590

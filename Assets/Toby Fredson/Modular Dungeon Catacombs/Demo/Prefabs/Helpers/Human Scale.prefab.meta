@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 121510d6f8547b4488c6e07428cc12c9
+timeCreated: 1552159280
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Prefabs/Helpers/Human
+    Scale.prefab
+  uploadId: 909590

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a07aa536edd0b0c42953e3fe83441af9
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Light Settings/CATAMSecene_Prefabs.lighting
+  uploadId: 909590

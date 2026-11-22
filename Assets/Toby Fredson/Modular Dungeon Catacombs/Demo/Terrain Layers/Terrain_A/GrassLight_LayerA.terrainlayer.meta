@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6cb9aea68131c2a4184a8e7077266f99
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Terrain Layers/Terrain_A/GrassLight_LayerA.terrainlayer
+  uploadId: 909590

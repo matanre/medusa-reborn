@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 771809f1a9421a845b225a1ce019a6ed
+timeCreated: 1496325454
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212016
+  packageName: Modular Dungeon - Catacombs
+  packageVersion: 3.0
+  assetPath: Assets/Toby Fredson/Modular Dungeon Catacombs/Demo/Materials/Mat_Cave
+    Mesh/CATA_Debris.mat
+  uploadId: 909590
